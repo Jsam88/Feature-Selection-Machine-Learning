@@ -17,7 +17,8 @@ cout << "Please enter total number of features: ";
 cin >> num_features;
 
     while(num_features > 0){
-        features_list.push_back(num_features);
+        Features* temp = new Features(num_features);
+        features_list.push_back(temp);
         num_features--;
     }
 
@@ -26,12 +27,12 @@ cin >> user_input;
 
 cout << "Using no features and 'random' evaluation, I get an accuracy of xx.x%" << endl;
 
-if(userInput == 1){
+if(user_input == 1){
     greedy_search->forward_selection(features_list);
 }
 
-else if(userInput == 2){
-    greedy_search -> backward_elimination(features_list)
+else if(user_input == 2){
+    greedy_search -> backward_elimination(features_list);
 }
 
 else {
