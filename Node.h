@@ -21,7 +21,7 @@ class Node {
         double feature_accuracy;
     
     double feature_evaluator(){                                 //Part 1: Need to utilize dummy evaluator that produces a random value as of now
-        double random_val = rand() % 100 / 1.0;
+        double random_val = 1.0 + (rand() % 100); 
         return random_val;
     }
 

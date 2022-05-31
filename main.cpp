@@ -8,6 +8,7 @@ using namespace std;
 
 int main(){
 
+greedy_search* search_selector = new greedy_search();
 int num_features;
 int user_input;
 vector<Features*> features_list;
@@ -25,14 +26,13 @@ cin >> num_features;
 cout << "Type the number of the algorithm you want to run." << endl << "1) Forward Selection" << endl << "2) Backward Elimination" << endl;
 cin >> user_input;
 
-cout << "Using no features and 'random' evaluation, I get an accuracy of xx.x%" << endl;
-
 if(user_input == 1){
-    greedy_search->forward_selection(features_list);
+    search_selector -> forward_selection(features_list);
 }
 
 else if(user_input == 2){
-    greedy_search -> backward_elimination(features_list);
+    // search_selector -> backward_elimination(features_list);
+    cout << "not ready" << endl;
 }
 
 else {
