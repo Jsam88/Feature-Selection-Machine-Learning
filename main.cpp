@@ -32,7 +32,7 @@ if(user_input == 1){
 
 else if(user_input == 2){
     // search_selector -> backward_elimination(features_list);
-    cout << "not ready" << endl;
+    search_selector -> backwards_elimination(features_list);
 }
 
 else {
