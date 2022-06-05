@@ -14,43 +14,51 @@ int main(){
     vector<double> train_labels;
     string file_in;
     int user_input;
-    greedy_search* search_selector = new greedy_search();
+    Validator* validator = new Validator(train_instances, train_labels);
+    greedy_search* search_selector = new greedy_search(validator);
     vector<Features*> features_list;
 
     cout << "Welcome to Jordan Sam's Feature Selection Algorithm." << endl;
-    cout << "Which file would you like to to test? Enter 1 or 2: " << endl 
-    << "1. Small Dataset (10 features)" << endl << "or" << endl
-    << "2. Large Dataset (40 features)" << endl;
+
+    cout << "Type in the name of the file to test: " << endl;
+    cin >> file_in;
+
+    cout << "Type the number of the algorithm you want to run:" << endl
+    << "1) Forward Selection" << endl << "2) Backward Elimination" << endl;
 
     cin >> user_input;
 
-    if (user_input == 1) {
-        file_in = "small-test-dataset.txt";
-    }
-    else if (user_input == 2) {
-        file_in = "Large-test-dataset.txt";
-    }
-    else {
-        cout << "Please try again." << endl;
-        return 0;
-    }
+    // if (user_input == 1) {
+    //     file_in = "small-test-dataset.txt";
+    // }
+    // else if (user_input == 2) {
+    //     file_in = "Large-test-dataset.txt";
+    // }
+    // else {
+    //     cout << "Please try again." << endl;
+    //     return 0;
+    // }
 
-    cout << "Normalizing the data:" << endl;
+    cout << "Please wait while I normal the data..." << endl;
     data_normalization(file_in, train_instances, train_labels);
+    cout <<"Done normalizing data!" << endl;
 
-
-    Validator* validator = new Validator(train_instances, train_labels);
+    for(int i = 0; i < train_instances.at(0).size(); i++) {
+        Features* temp = new Features(i + 1);
+        features_list.push_back(temp);
+    }
 
     if (user_input == 1) {
-        vector<int> small_test = {3, 5, 7};
-        cout << "Using features subset {3, 5, 7}" << endl;
-        validator -> leave_one_out_validation(small_test);        //Accuracy of 3,5,7
+        search_selector -> forward_selection(features_list);
     }
 
     else if (user_input == 2) {
-        vector<int> large_test = {1, 15, 27};
-        cout << "Using features subset {1, 15, 27}" << endl;
-        validator -> leave_one_out_validation(large_test);        //Accuracy of 1,15,27
+        search_selector -> backwards_elimination(features_list);       //Accuracy of 1,15,27
+    }
+
+    else {
+        cout << "No algorithm selected. Please try again." << endl;
+        return -1;
     }
 
     return 0;

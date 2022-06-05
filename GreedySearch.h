@@ -14,16 +14,16 @@ class greedy_search {
         Validator* validator;                                                   //Updated in part 3
 
     public:
-        greedy_search() {
+        greedy_search(Validator* validator) {
             this -> no_features = nullptr;                                      //Constructor for initial 0 features
+            this -> validator = validator;
         }
-
         void forward_selection(vector<Features*> features_list){                //forward selection takes the parameter of the features given/ feature data
             this -> no_features = new Node(this->validator);                    //Starting with 0 features, create a new node with rand acc     (updated in part 3)
             no_features -> feature_evaluator();                                 //Also updated in part 3
             Node* current_node = no_features;
 
-            cout << "Using no features and \"random\" evaluation, I get an accuracy of " << no_features->feature_accuracy << '%' << endl << "Beginning search" << endl;
+            cout << "Using no features and leave-one-out validation, I get an accuracy of " << no_features->feature_accuracy << '%' << endl << "Beginning search" << endl;
 
             while(!features_list.empty()) {                                                         //While the features are not empty pushback the next feature greedily and check till empty
 
@@ -79,7 +79,7 @@ class greedy_search {
             no_features -> feature_evaluator();
             Node* current_node = no_features;
 
-            cout << "Using all features and \"random\" evaluation, I get an accuracy of " << no_features->feature_accuracy << '%' << endl << "Beginning search" << endl;
+            cout << "Using all features and leave-one-out validation, I get an accuracy of " << no_features->feature_accuracy << '%' << endl << "Beginning search" << endl;
 
             while(!current_node->user_features.empty()) {                                     //While the features are not empty pushback the next feature greedily and check till empty
 
