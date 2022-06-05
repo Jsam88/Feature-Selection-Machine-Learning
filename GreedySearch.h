@@ -83,7 +83,7 @@ class greedy_search {
 
             while(!current_node->user_features.empty()) {                                     //While the features are not empty pushback the next feature greedily and check till empty
 
-                for (int i = 0; i < features_list.size(); i++) {
+                for (int i = 0; i < current_node->user_features.size(); i++) {
                     current_node->pushback_child(remove_feature(current_node, i));       //Pushback new node with a feature removed
                 }
 
@@ -91,14 +91,17 @@ class greedy_search {
                 int best_index = 0;
                 double best_accuracy = 0.0;
                 for (int i = 0; i < current_node->child_nodes.size(); i++){     //Greedyily searching best accuracy in child nodes
-                    double evaluator_acc = current_node->child_nodes.at(i) -> feature_accuracy;     //Grab accuracy of node
-                    cout << "Using feature(s)";
-                    current_node->child_nodes.at(i)->print_features();                              //helper print function
-                    cout << " = " << evaluator_acc << '%' << endl;
-                    if (evaluator_acc > best_accuracy) {
-                        best_index = i;                                                             //keep track of best index
+                    if (!(current_node->user_features.size() == 1)) {
+                        double evaluator_acc = current_node->child_nodes.at(i) -> feature_accuracy;     //Grab accuracy of node
+                        cout << "Using feature(s)";
+                        current_node->child_nodes.at(i)->print_features();                              //helper print function
+                        cout << " = " << evaluator_acc << '%' << endl;
+                        
+                        if (evaluator_acc > best_accuracy) {
+                            best_index = i;                                                             //keep track of best index
+                        }
+                        best_accuracy = max(best_accuracy, evaluator_acc);                              //Keep highest evaluation accuracy (started at 0.0)
                     }
-                    best_accuracy = max(best_accuracy, evaluator_acc);                              //Keep highest evaluation accuracy (started at 0.0)
                 }
 
                 if (current_node->feature_accuracy > best_accuracy){                                //If a higher accuracy is > than best_accuracy, then we have the node that has the best accuracy
@@ -130,6 +133,7 @@ class greedy_search {
         Node* remove_feature(Node* node, int index) {
             Node* temp = new Node(node->user_features, this -> validator);              //Updated in part 3
             temp->user_features.erase(temp->user_features.begin() + index);
+            temp -> feature_evaluator();
             return temp;
         }
 };
