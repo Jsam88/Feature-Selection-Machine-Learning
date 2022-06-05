@@ -6,12 +6,18 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 void data_normalization(string file_in, vector<vector<double>>& train_instances, vector<double>& train_labels) {
     ifstream input_file_system;
 
     input_file_system.open(file_in);
+
+    if (!input_file_system.is_open()){
+        cout << "Could not open data set " << file_in << endl << "Please try running the program again." << endl;
+        exit(0);
+    }
 
     if (input_file_system.is_open()){                                           //If the file is open, read the row and add it to the training labels/instances, else restart
         stringstream in_string_stream;
@@ -35,6 +41,12 @@ void data_normalization(string file_in, vector<vector<double>>& train_instances,
             features_row.clear();                                               //Clear the row and stream buffer data to empty object, and continue reading the file
             in_string_stream.clear();
         }
+
+
+
+        cout << "This dataset has " << train_instances.at(0).size() << " features (not including the class attribute), with " << train_labels.size() << " instances." << endl;
+    
+    
     vector<double> average(train_instances.at(0).size(), 0.0);
     vector<double> std_dev(train_instances.at(0).size(), 0.0);
 
@@ -67,11 +79,6 @@ void data_normalization(string file_in, vector<vector<double>>& train_instances,
             train_instances.at(i).at(j) = (train_instances.at(i).at(j) - average.at(j)) / std_dev.at(j);
         }
     }
-    }
-
-     else{
-        cout << "Could not open data set " << file_in << endl << "Please try running the program again.";
-        return;
     }
 }
 #endif
