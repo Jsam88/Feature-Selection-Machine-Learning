@@ -1,16 +1,17 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include "Validator.h"
 #include <vector>
 #include <iostream>
-
-#include "Validator.h"
+#include <cstdlib>
 
 using namespace std;
 
 class Features {
     public:
         int data;
+    public:
         Features(int data) {
         this -> data = data;
         }
@@ -30,20 +31,18 @@ class Node {
         }
 
     //UPDATED IN PART 3
-    void feature_evaluator(){                                 //utilizing validator for accuracy (Not randomizer)
+    double feature_evaluator(){                                 //utilizing validator for accuracy (Not randomizer)
         vector<int> accuracy_subset;
-        double feature_accuracy = 0;
+        double temp = 0;
             for (int i = 0; i < user_features.size(); i++) {
                 int data = user_features.at(i)->data;
                 accuracy_subset.push_back(data);
             }
-            feature_accuracy = this -> validator -> leave_one_out_validation(accuracy_subset);
-            this->feature_accuracy = feature_accuracy * 100.0;
+            temp = this -> validator -> leave_one_out_validation(accuracy_subset);
+            // cout << this -> validator -> leave_one_out_validation(accuracy_subset);
+            return this -> feature_accuracy = temp * 100.0;
+            // cout << feature_accuracy << endl;
     }
-
-    // Node() {                                                    //Provide the accuracy of the starting node if there are no features
-    //     feature_accuracy = feature_evaluator();
-    // }
 
     void pushback_feature(Features* new_feature){               //Push back new feature onto the list of user features
         this->user_features.push_back(new_feature);
@@ -57,7 +56,6 @@ class Node {
             for (int i = 0; i < user_features.size(); i++){
                 this->user_features.push_back(user_features.at(i));
             }
-            // feature_accuracy = evaluator();
             this->validator = validator;
         }
 
