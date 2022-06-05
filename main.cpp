@@ -14,8 +14,6 @@ int main(){
     vector<double> train_labels;
     string file_in;
     int user_input;
-    Validator* validator = new Validator(train_instances, train_labels);
-    greedy_search* search_selector = new greedy_search(validator);
     vector<Features*> features_list;
 
     cout << "Welcome to Jordan Sam's Feature Selection Algorithm." << endl;
@@ -28,22 +26,14 @@ int main(){
 
     cin >> user_input;
 
-    // if (user_input == 1) {
-    //     file_in = "small-test-dataset.txt";
-    // }
-    // else if (user_input == 2) {
-    //     file_in = "Large-test-dataset.txt";
-    // }
-    // else {
-    //     cout << "Please try again." << endl;
-    //     return 0;
-    // }
-
     cout << "Please wait while I normal the data..." << endl;
     data_normalization(file_in, train_instances, train_labels);
     cout <<"Done normalizing data!" << endl;
 
-    for(int i = 0; i < train_instances.at(0).size(); i++) {
+    Validator* validator = new Validator(train_instances, train_labels);
+    greedy_search* search_selector = new greedy_search(validator);
+
+    for(int i = 0; i < train_instances.at(0).size(); i++) {         //Pushback features instances
         Features* temp = new Features(i + 1);
         features_list.push_back(temp);
     }
