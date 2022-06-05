@@ -1,11 +1,14 @@
 #ifndef CLASSIFIER_H
 #define CLASSIFIER_H
+
 #include <vector>
 #include <string>
 #include <fstream>
 #include "Node.h"
 #include <sstream>
 #include <cmath>
+
+using namespace std;
 
 class Classifier {
     public:

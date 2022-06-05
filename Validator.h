@@ -21,8 +21,8 @@ class Validator {
             this->num_instances = num_instances;                                        //Total # of tests to be done
             this-> labels = labels;
         }
-
-        void leave_one_out_validation(vector<int> feature_subset) {                   //Parameter is the vector of features (Call this on the features that we want to use and eventually the best features)
+        //(updated in part 3) actually needs double to return
+        double leave_one_out_validation(vector<int> feature_subset) {                   //Parameter is the vector of features (Call this on the features that we want to use and eventually the best features)
 
             vector<vector<double>> filtered_instances;                                  //Vector of vectors needed for which instances we went through
 
@@ -59,6 +59,7 @@ class Validator {
             cout << "The total number of predictions are: " << (num_instances.size()) << endl;               //Take the vector of vectors size to 
             // cout << "Number of data instances: " << (double)(num_instances.size()) << endl;                       //Test to confirm # of rows in data set
             cout << "Accuracy is: " << counter / (double)(num_instances.size()) << endl;                                        //cast necessary to convert int to double since the accuracy is double in main...
+            return counter / (double)(num_instances.size());
         }
 };
 #endif

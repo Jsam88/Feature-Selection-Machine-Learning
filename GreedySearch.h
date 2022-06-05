@@ -1,14 +1,17 @@
+#ifndef GREEDYSEARCH_H
+#define GREEDYSEARCH_H
+
 #include "Node.h"
+#include "Validator.h"
 #include <algorithm>
 #include <iostream>
 using namespace std;
 
-#ifndef GREEDYSEARCH_H
-#define GREEDYSEARCH_H
 
 class greedy_search {
     private:
         Node* no_features;
+        Validator* validator;                                                   //Updated in part 3
 
     public:
         greedy_search() {
@@ -16,17 +19,19 @@ class greedy_search {
         }
 
         void forward_selection(vector<Features*> features_list){                //forward selection takes the parameter of the features given/ feature data
-            this -> no_features = new Node();                                   //Starting with 0 features, create a new node with rand acc
+            this -> no_features = new Node(this->validator);                    //Starting with 0 features, create a new node with rand acc     (updated in part 3)
+            no_features -> feature_evaluator();                                 //Also updated in part 3
             Node* current_node = no_features;
 
             cout << "Using no features and \"random\" evaluation, I get an accuracy of " << no_features->feature_accuracy << '%' << endl << "Beginning search" << endl;
 
-            while(!features_list.empty()) {                                     //While the features are not empty pushback the next feature greedily and check till empty
+            while(!features_list.empty()) {                                                         //While the features are not empty pushback the next feature greedily and check till empty
 
                 for (int i = 0; i < features_list.size(); i++) {
-                    Node* temp = new Node(current_node -> user_features);       //Node starting point pointing to data from features
-                    temp -> pushback_feature(features_list.at(i));              //provide the temp node with the added features
-                    current_node->pushback_child(temp);                         //Push back the feature onto the child node
+                    Node* temp = new Node(current_node -> user_features, this->validator);          //Node starting point pointing to data from features (updated in part 3)
+                    temp -> pushback_feature(features_list.at(i));                                  //provide the temp node with the added features
+                    temp -> feature_evaluator();                                                    //(updated in part 3)
+                    current_node->pushback_child(temp);                                             //Push back the feature onto the child node
                 }
 
                 //Initialize  values to hold/keep track of
@@ -70,7 +75,8 @@ class greedy_search {
         }
 
         void backwards_elimination(vector<Features*> features_list){                //forward selection takes the parameter of the features given/ feature data
-            this -> no_features = new Node(features_list);                                   //Starting with all features, create a new node with rand acc
+            this -> no_features = new Node(features_list,this->validator);          //Starting with all features, create a new node with rand acc (updated in part 3)
+            no_features -> feature_evaluator();
             Node* current_node = no_features;
 
             cout << "Using all features and \"random\" evaluation, I get an accuracy of " << no_features->feature_accuracy << '%' << endl << "Beginning search" << endl;
@@ -122,7 +128,7 @@ class greedy_search {
         }
 
         Node* remove_feature(Node* node, int index) {
-            Node* temp = new Node(node->user_features);
+            Node* temp = new Node(node->user_features, this -> validator);              //Updated in part 3
             temp->user_features.erase(temp->user_features.begin() + index);
             return temp;
         }
