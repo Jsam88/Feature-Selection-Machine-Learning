@@ -16,22 +16,25 @@ void data_normalization(string file_in, vector<vector<double>>& train_instances,
     if (input_file_system.is_open()){                                           //If the file is open, read the row and add it to the training labels/instances, else restart
         stringstream in_string_stream;
         string row;
-
         while(getline(input_file_system, row)){                                 //Using while loop to grab row of data
             in_string_stream << row;
             string temp;
             in_string_stream >> temp;
             train_labels.push_back(string_to_IEEE(temp));                       //add IEEE to the training labels after converting it from string to double
 
-            vector<double> poop;
+            vector<double> features_row;
             while (in_string_stream >> temp) {
-                poop.push_back(string_to_IEEE(temp));
+                features_row.push_back(string_to_IEEE(temp));
             }
-            train_instances.push_back(poop);
-            poop.clear();
+            train_instances.push_back(features_row);
+
+            // for(int i = 0; i < features_row.size(); i++){                    //Test to ensure that the IEEE number is being added to the vector correctly
+            //     cout << features_row.at(i) << endl;
+            // }
+
+            features_row.clear();                                               //Clear the row and stream buffer data to empty object, and continue reading the file
             in_string_stream.clear();
         }
-
     vector<double> average(train_instances.at(0).size(), 0.0);
     vector<double> std_dev(train_instances.at(0).size(), 0.0);
 
