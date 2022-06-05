@@ -1,10 +1,12 @@
+#ifndef NODE_H
+#define NODE_H
+
 #include <vector>
 #include <iostream>
 
-using namespace std;
+#include "Validator.h"
 
-#ifndef NODE_H
-#define NODE_H
+using namespace std;
 
 class Features {
     public:
@@ -19,15 +21,29 @@ class Node {
         vector<Node*> child_nodes;
         vector<Features*> user_features;
         double feature_accuracy;
+        Validator* validator;                                   //UPDATED IN PART 3 (added validator pointer to access class)
     
-    double feature_evaluator(){                                 //Part 1: Need to utilize dummy evaluator that produces a random value as of now
-        double random_val = 1.0 + (rand() % 100); 
-        return random_val;
+    public:
+    //UPDATED IN PART 3
+    Node(Validator* validator) {
+            this->validator = validator;
+        }
+
+    //UPDATED IN PART 3
+    void feature_evaluator(){                                 //utilizing validator for accuracy (Not randomizer)
+        vector<int> accuracy_subset;
+        double feature_accuracy = 0;
+            for (int i = 0; i < user_features.size(); i++) {
+                int data = user_features.at(i)->data;
+                accuracy_subset.push_back(data);
+            }
+            feature_accuracy = this -> validator -> leave_one_out_validation(accuracy_subset);
+            this->feature_accuracy = feature_accuracy * 100.0;
     }
 
-    Node() {                                                    //Provide the accuracy of the starting node if there are no features
-        feature_accuracy = feature_evaluator();
-    }
+    // Node() {                                                    //Provide the accuracy of the starting node if there are no features
+    //     feature_accuracy = feature_evaluator();
+    // }
 
     void pushback_feature(Features* new_feature){               //Push back new feature onto the list of user features
         this->user_features.push_back(new_feature);
@@ -37,12 +53,13 @@ class Node {
         this->child_nodes.push_back(new_child);
     }
 
-    Node(vector<Features*> user_features){                      //Return accuracy of some combination of features
-        for (int i = 0; i < user_features.size(); i++){
-            this->user_features.push_back(user_features.at(i));
+    Node(vector<Features*> user_features, Validator* validator){        //UPDATED IN PART 3
+            for (int i = 0; i < user_features.size(); i++){
+                this->user_features.push_back(user_features.at(i));
+            }
+            // feature_accuracy = evaluator();
+            this->validator = validator;
         }
-        feature_accuracy = feature_evaluator();
-    }
 
     void print_features(){                                      //helper function to print out current features
         int num_features;
