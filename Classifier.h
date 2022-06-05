@@ -23,8 +23,8 @@ class Classifier {
             for (int i = 0; i < lhs.size(); i++){                                    //Take the nromalized distance from the trained and test instance at i
                 sum += pow((lhs.at(i) - rhs.at(i)), 2);                              //square it and add it to the sum. The val you return is the square root of the sum
             }
-            // return sqrt(sum);
-            return sum;
+            return sqrt(sum);
+            // return sum;
         }
 
         //The input to the Train method is the set of training instances (or their IDs), no output for this method. 
@@ -33,6 +33,10 @@ class Classifier {
         void train(vector<vector<double>> train_instances, vector<double> train_labels) {
             this->train_instances = train_instances;
             this->train_labels = train_labels;
+            // for(int i = 0; i < train_labels.size(); i++){
+            //     cout << train_labels.at(i) << endl;
+            // }
+            // exit(0);
         }
 
         //The input to the Test method is a test instance (or its ID) and the output is the predicted class label.
